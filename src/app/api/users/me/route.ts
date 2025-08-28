@@ -15,6 +15,9 @@ export async function GET(request: NextRequest) {
         });
     }
     catch(error: any) {
-        return NextResponse.json({error: error.message}, {status: 400});
+        return NextResponse.json(
+        { error: error.message },
+        { status: error.message.includes("token") ? 401 : 400 }
+        );
     }
 }

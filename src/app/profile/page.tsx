@@ -18,9 +18,14 @@ export default function ProfilePage() {
         }
     }
     const getUserData = async () =>  {
-        const res = await axios.get('/api/users/me');
-        console.log(res.data);
-        setUserData(res.data.data._id);
+        try {
+            const res = await axios.get('/api/users/me');
+            console.log(res.data);
+            setUserData(res.data.data._id);
+        } catch(error: any) {
+            toast.error(error.response?.data?.error || "Failed to fetch user data");
+        }
+
     }
     return (
         <div className="flex flex-col gap-4 items-center justify-center min-h-screen">
@@ -28,7 +33,7 @@ export default function ProfilePage() {
             <hr />
             <p>Welcome to your profile page!</p>
             <hr />
-            <h2>{userData === "" ? "No Data Found" : <Link href={`/profile/${userData}`}>{userData}</Link>}</h2>
+            <h2 className="text-xl font-semibold text-blue-400">{userData === "" ? "No Data Found" : <Link href={`/profile/${userData}`}>{userData}</Link>}</h2>
             <button
             onClick={logout}
             className="bg-red-500 text-white py-2 px-4 rounded">Logout</button>
